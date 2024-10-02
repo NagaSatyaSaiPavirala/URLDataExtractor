@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urldataextractor-dep
+  labels:
+    app: urldataextractor-dep
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: urldataextractor-web
+  template:
+    metadata:
+      labels:
+        app: urldataextractor-web
+    spec:
+      containers:
+        - name: webapp
+          image: satya4236/urldataextractor:1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8085
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+      imagePullSecrets:
+        - name: docker-hub-secret
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: urldataextractor-web
+spec:
+  type: ClusterIP
+  selector:
+    app: urldataextractor-web
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8085

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: urldataextractor-rs
+  labels:
+    name: urldataextractor
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: urldataextractor-web
+  template:
+    metadata:
+      labels:
+        app: urldataextractor-web
+    spec:
+      containers:
+        - name: webapp
+          image: satya4236/urldataextractor:1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8085
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+      imagePullSecrets:
+        - name:  docker-hub-secret

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: urldataextractor
+  labels:
+    name: urldataextractor
+spec:
+  containers:
+    - name: urldataextractor
+      image: satya4236/urldataextractor:1
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 8085
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "500m"
+        limits:
+          memory: "512Mi"
+          cpu: "1000m"
+  imagePullSecrets:
+    - name: docker-hub-secret
